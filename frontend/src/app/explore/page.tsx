@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { BrowserProvider, ethers } from 'ethers';
 import contractAddress from "../contractInfo/contractAddress.json"
 import contractAbi from "../contractInfo/contractAbi.json"
+import Connect from '../components/Connect';
 
 declare global {
     interface Window {
@@ -175,7 +176,7 @@ const ExplorePage = () => {
                             </Link>
                         </div>
                         <div className="flex items-center space-x-4">
-                            {!walletConnected ? (
+                            {/* {!walletConnected ? (
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     className="bg-white text-black px-6 py-2 rounded-full font-semibold shadow-md hover:shadow-lg transition duration-200 ease-in-out"
@@ -190,7 +191,8 @@ const ExplorePage = () => {
                                 >
                                     <span >{walletAddress.slice(0, 5) + '...' + walletAddress.slice(-4)}</span>
                                 </motion.button>
-                            )}
+                            )} */}
+                            <Connect/>
                         </div>
                     </nav>
                 </div>
