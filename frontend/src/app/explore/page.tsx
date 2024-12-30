@@ -7,7 +7,7 @@ import {
     X
 } from 'lucide-react';
 import Link from 'next/link';
-import { BrowserProvider, ethers } from 'ethers';
+import { BrowserProvider, ethers, Provider } from 'ethers';
 import contractAddress from "../contractInfo/contractAddress.json"
 import contractAbi from "../contractInfo/contractAbi.json"
 import Connect from '../components/Connect';
@@ -92,20 +92,24 @@ const ExplorePage = () => {
         await (await bounceContract.donate(address,"0x94A7Af5edB47c3B91d1B4Ffc2CA535d7aDA8CEDe", ethers.parseUnits(bookingTrainer.coins.toString(), 18))).wait();
       
       }
-      const withdraw = async (amount:any)=> {
-        if(!window.ethereum){
-            return
+      const withdraw = async (amount: any) => {
+        if (!window.ethereum) {
+            return;
         }
-        const {abi} = contractAbi;
+        const { abi } = contractAbi;
         const provider = new BrowserProvider(window.ethereum);
-    
-        const signer = await provider.getSigner();
+        const signer = await provider.getSigner()
         const address = await signer.getAddress();
-        const bounceContract = new ethers.Contract(contractAddress.address, abi, signer)
+        const bounceContract = new ethers.Contract(contractAddress.address, abi, signer);
     
-        await (await bounceContract.mint(address, ethers.parseUnits(amount.toString(), 18))).wait();
-      
-      }
+        try {
+            const tx = await bounceContract.mint(address, ethers.parseUnits(amount.toString(), 18));
+            await tx.wait();
+            console.log('Withdrawal successful');
+        } catch (error) {
+            console.error('Error during withdrawal:', error);
+        }
+    };
 
     const trainers = [
         {
